@@ -37,7 +37,160 @@ function switchTab(tab){document.querySelectorAll('[data-tab]').forEach(b=>b.cla
 function switchView(v){activeView=v;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));show('matchesView',v==='matches');show('leaderboardView',v==='leaderboard');show('rules2View',v==='rules2')}
 function makeFixtures(n){const target=n===4?3:4, total=n*target/4, candidates=[];for(let a=0;a<n;a++)for(let b=a+1;b<n;b++)for(let c=b+1;c<n;c++)for(let d=c+1;d<n;d++){candidates.push({teams:[[a,b],[c,d]]},{teams:[[a,c],[b,d]]},{teams:[[a,d],[b,c]]})}let counts=Array(n).fill(0),used=new Set(),chosen=[];let budget=300000;function search(){if(chosen.length===total)return counts.every(x=>x===target);if(--budget<=0)return false;let options=candidates.filter(m=>{let ps=m.teams.flat(),keys=m.teams.map(p=>p.slice().sort((x,y)=>x-y).join('-'));return ps.every(p=>counts[p]<target)&&keys.every(k=>!used.has(k))});options.sort(()=>Math.random()-.5);options.sort((x,y)=>y.teams.flat().reduce((s,p)=>s+target-counts[p],0)-x.teams.flat().reduce((s,p)=>s+target-counts[p],0));for(const m of options){let ps=m.teams.flat(),keys=m.teams.map(p=>p.slice().sort((x,y)=>x-y).join('-'));ps.forEach(p=>counts[p]++);keys.forEach(k=>used.add(k));chosen.push(m);if(search())return true;chosen.pop();ps.forEach(p=>counts[p]--);keys.forEach(k=>used.delete(k))}return false}if(!search())throw Error('Could not generate a balanced draw. Please try again.');return chosen.map((m,i)=>({id:'M'+(i+1),teams:m.teams.map(t=>t.map(p=>'P'+p)),score1:null,score2:null}))}
 function standings(){const rows=state.players.map(p=>({...p,points:0,wins:0,played:0,pd:0}));const by=Object.fromEntries(rows.map(p=>[p.id,p]));const cap=state.target===21?5:3;for(const m of state.matches){if(m.score1==null||m.score2==null)continue;const win=m.score1>m.score2?0:1;for(let t=0;t<2;t++)for(const id of m.teams[t]){const p=by[id];p.played++;if(t===win){p.points+=3;p.wins++}else p.points+=1;p.pd+=Math.max(-cap,Math.min(cap,(t===0?m.score1-m.score2:m.score2-m.score1)))}}return rows.sort((a,b)=>b.points-a.points||b.pd-a.pd||a.name.localeCompare(b.name))}
-function render(){if(!state)return;code=code||new URLSearchParams(location.search).get('code');$('displayCode').textContent=code;$('tTitle').textContent=state.title||"Today's tournament";$('tMeta').textContent=`${state.players.length} players · First to ${state.target} · ${state.matches.length} matches`;$('progress').textContent=`${state.matches.filter(m=>m.score1!=null).length}/${state.matches.length} complete`;$('livepill').textContent=state.matches.every(m=>m.score1!=null)?'COMPLETED':'LIVE';$('matchesList').innerHTML=state.matches.map((m,i)=>{const a=m.teams[0].map(id=>state.players.find(p=>p.id===id).name).join(' + '),b=m.teams[1].map(id=>state.players.find(p=>p.id===id).name).join(' + '),done=m.score1!=null;return `<div style="padding:12px 0;border-bottom:1px solid var(--line)"><div class="matchnum">Game ${i+1} ${done?'<span class="pill">SCORED</span>':'<span class="pill">AWAITING SCORE</span>'}</div><div class="match"><div class="team">${esc(a)}</div><div class="vs">VS</div><div class="team right">${esc(b)}</div></div><div class="scoreline"><input type="number" min="0" max="${state.target}" id="s1-${m.id}" placeholder="${done?m.score1:'0'}" value="${done?m.score1:''}"><span class="muted">–</span><input type="number" min="0" max="${state.target}" id="s2-${m.id}" placeholder="${done?m.score2:'0'}" value="${done?m.score2:''}"><button data-save="${m.id}">${done?'Update':'Save score'}</button></div></div>`}).join('');document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>saveScore(b.dataset.save));const rows=standings(),complete=state.matches.every(m=>m.score1!=null),top=rows[0],tied=rows.filter(r=>r.points===top.points&&r.pd===top.pd);$('winnerBox').innerHTML=complete?`<div class="champ"><div class="eyebrow">${tied.length>1?'Joint leaders':'Tournament winner'}</div><div class="winner">${tied.map(p=>esc(p.name)).join(' & ')}</div><div class="small muted">${top.points} tournament points · ${top.pd>0?'+':''}${top.pd} capped point difference</div></div>`:`<div class="notice small">${state.matches.filter(m=>m.score1!=null).length} of ${state.matches.length} games completed. Standings update as scores are entered.</div>`;$('leaderboard').innerHTML=rows.map((p,i)=>`<div class="rank"><div class="pos">${i+1}</div><div class="name">${esc(p.name)}</div><div class="num">${p.points}</div><div class="num">${p.wins}</div><div class="num">${p.pd>0?'+':''}${p.pd}</div><div class="num">${p.played}</div></div>`).join('');}
+
+function render() {
+  if (!state) return;
+
+  code = code || new URLSearchParams(location.search).get('code');
+
+  $('displayCode').textContent = code;
+  $('tTitle').textContent = state.title || "Today's tournament";
+  $('tMeta').textContent =
+    `${state.players.length} players · First to ${state.target} · ${state.matches.length} matches`;
+
+  $('progress').textContent =
+    `${state.matches.filter(m => m.score1 != null).length}/${state.matches.length} complete`;
+
+  $('livepill').textContent =
+    state.matches.every(m => m.score1 != null) ? 'COMPLETED' : 'LIVE';
+
+  const matchList = $('matchesList');
+
+  // Only rebuild the match list when match data actually changes.
+  // Normal 3-second refreshes will no longer erase typed scores.
+  const matchKey = JSON.stringify(state.matches);
+
+  if (matchList.dataset.renderKey !== matchKey) {
+
+    // Preserve unfinished score entries before updating the screen.
+    const drafts = {};
+
+    matchList.querySelectorAll('input[type="number"]').forEach(input => {
+      if (input.value !== '') {
+        drafts[input.id] = input.value;
+      }
+    });
+
+    const activeId = matchList.contains(document.activeElement)
+      ? document.activeElement.id
+      : null;
+
+    matchList.innerHTML = state.matches.map((m, i) => {
+      const a = m.teams[0]
+        .map(id => state.players.find(p => p.id === id).name)
+        .join(' + ');
+
+      const b = m.teams[1]
+        .map(id => state.players.find(p => p.id === id).name)
+        .join(' + ');
+
+      const done = m.score1 != null;
+
+      const value1 = done ? m.score1 : (drafts['s1-' + m.id] ?? '');
+      const value2 = done ? m.score2 : (drafts['s2-' + m.id] ?? '');
+
+      return `
+        <div style="padding:12px 0;border-bottom:1px solid var(--line)">
+          <div class="matchnum">
+            Game ${i + 1}
+            ${done
+              ? '<span class="pill">SCORED</span>'
+              : '<span class="pill">AWAITING SCORE</span>'}
+          </div>
+
+          <div class="match">
+            <div class="team">${esc(a)}</div>
+            <div class="vs">VS</div>
+            <div class="team right">${esc(b)}</div>
+          </div>
+
+          <div class="scoreline">
+            <input
+              type="number"
+              min="0"
+              max="${state.target}"
+              id="s1-${m.id}"
+              placeholder="0"
+              value="${value1}"
+            >
+
+            <span class="muted">–</span>
+
+            <input
+              type="number"
+              min="0"
+              max="${state.target}"
+              id="s2-${m.id}"
+              placeholder="0"
+              value="${value2}"
+            >
+
+            <button data-save="${m.id}">
+              ${done ? 'Update' : 'Save score'}
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    matchList.dataset.renderKey = matchKey;
+
+    // Restore focus if a score field was being edited.
+    if (activeId) {
+      const activeInput = $(activeId);
+      if (activeInput) {
+        activeInput.focus({ preventScroll: true });
+      }
+    }
+
+    document.querySelectorAll('[data-save]').forEach(button => {
+      button.onclick = () => saveScore(button.dataset.save);
+    });
+  }
+
+  // Update leaderboard independently of the score-entry fields.
+  const rows = standings();
+  const complete = state.matches.every(m => m.score1 != null);
+  const top = rows[0];
+  const tied = rows.filter(
+    r => r.points === top.points && r.pd === top.pd
+  );
+
+  $('winnerBox').innerHTML = complete
+    ? `
+      <div class="champ">
+        <div class="eyebrow">
+          ${tied.length > 1 ? 'Joint leaders' : 'Tournament winner'}
+        </div>
+        <div class="winner">
+          ${tied.map(p => esc(p.name)).join(' & ')}
+        </div>
+        <div class="small muted">
+          ${top.points} tournament points ·
+          ${top.pd > 0 ? '+' : ''}${top.pd} capped point difference
+        </div>
+      </div>
+    `
+    : `
+      <div class="notice small">
+        ${state.matches.filter(m => m.score1 != null).length}
+        of ${state.matches.length} games completed.
+        Standings update as scores are entered.
+      </div>
+    `;
+
+  $('leaderboard').innerHTML = rows.map((p, i) => `
+    <div class="rank">
+      <div class="pos">${i + 1}</div>
+      <div class="name">${esc(p.name)}</div>
+      <div class="num">${p.points}</div>
+      <div class="num">${p.wins}</div>
+      <div class="num">${p.pd > 0 ? '+' : ''}${p.pd}</div>
+      <div class="num">${p.played}</div>
+    </div>
+  `).join('');
+}
+
 async function refresh(silent=false){if(!sb||!code)return;try{const {data,error}=await sb.rpc('rally_get',{p_code:code});if(error)throw error;state=data;render();$('syncStatus').textContent='Live sync · refreshed just now';}catch(e){if(!silent)msg(e.message,true)}}
 async function saveScore(id){const s1=Number($('s1-'+id).value),s2=Number($('s2-'+id).value);if(!Number.isInteger(s1)||!Number.isInteger(s2)||s1<0||s2<0||s1>state.target||s2>state.target||s1===s2||Math.max(s1,s2)!==state.target){msg(`Enter a valid final score: one side must reach ${state.target}, with no tie.`,true);return}try{msg('Saving score…');const {data,error}=await sb.rpc('rally_score',{p_code:code,p_match_id:id,p_score1:s1,p_score2:s2});if(error)throw error;state=data;render();msg('Score saved and shared with everyone.')}catch(e){msg(e.message,true)}}
 function enterTournament(c){code=c.toUpperCase();history.replaceState({},'',location.pathname+'?code='+code);show('setup',false);show('home',false);show('tournament',true);switchView('matches');refresh();if(poller)clearInterval(poller);poller=setInterval(()=>refresh(true),3000)}
