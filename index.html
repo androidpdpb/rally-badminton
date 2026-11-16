@@ -20,23 +20,24 @@
 <section class="hero"><div class="eyebrow">Your game. Your crew.</div><h1>Play hard.<br><span style="color:var(--lime)">Keep it fair.</span></h1><p>Create a rotating-partner doubles tournament, enter scores from any phone and build a shared record of your club's performance.</p></section>
 <div id="home">
 <div class="tabs"><button class="tab active" data-home="create">Start a tournament</button><button class="tab" data-home="join">Join with code</button><button class="tab" data-home="performance">Performance</button><button class="tab" data-home="rules">Scoring rules</button></div>
-<section id="createPane" class="panel"><h2>Set up today's games</h2><div class="grid"><div class="field"><label>Number of players</label><select id="playerCount"><option value="4">4 players</option><option value="5">5 players</option><option value="6" selected>6 players</option></select></div><div class="field"><label>Game format</label><select id="target"><option value="21">First to 21</option><option value="15">First to 15</option></select></div></div><div id="playerNames" class="names"></div><div class="notice small">Player names are selected from your club list. RALLY shuffles player order and randomises the draw each tournament; partners won't repeat within a single tournament. 7th and 8th player support can be added later.</div><div class="field" style="margin-top:12px"><label>Organiser PIN (8 digits)</label><input id="createPin" type="password" inputmode="numeric" maxlength="8" placeholder="Enter organiser PIN" autocomplete="off"></div><div class="actions"><button id="createTournament">Generate tournament</button></div></section>
+<section id="createPane" class="panel"><h2>Set up today's games</h2><div class="grid"><div class="field"><label>Number of players</label><select id="playerCount"><option value="4">4 players</option><option value="5">5 players</option><option value="6" selected>6 players</option></select></div><div class="field"><label>Game format</label><select id="target"><option value="21">First to 21</option><option value="15">First to 15</option></select></div><div class="field"><label>Scoring format</label><select id="scoringMode"><option value="golden">Golden</option><option value="difference">Difference of Two</option></select></div></div><div id="playerNames" class="names"></div><div class="notice small">Player names are selected from your club list. RALLY shuffles player order and randomises the draw each tournament; partners won't repeat within a single tournament. 7th and 8th player support can be added later.</div><div class="field" style="margin-top:12px"><label>Organiser PIN (8 digits)</label><input id="createPin" type="password" inputmode="numeric" maxlength="8" placeholder="Enter organiser PIN" autocomplete="off"></div><div class="actions"><button id="createTournament">Generate tournament</button></div></section>
 <section id="joinPane" class="panel hidden"><h2>Join a tournament</h2><div class="field"><label>6-character tournament code</label><input id="joinCode" maxlength="6" placeholder="E.G. A4K9QX" style="text-transform:uppercase;letter-spacing:.15em"></div><div class="actions"><button id="joinTournament">Open tournament</button></div></section>
 <section id="performancePane" class="panel hidden"><div class="rowbetween"><h2>Club performance</h2><button class="secondary" id="refreshPerformance">Refresh data</button></div><p class="muted small">All completed match results across saved tournaments. Choose a player to see their record and win rate with every doubles partner.</p><div class="field"><label>Player</label><select id="performancePlayer"><option value="">All players</option></select></div><div id="performanceContent" style="margin-top:14px"><div class="notice">Loading historical results…</div></div></section>
-<section id="rulesPane" class="panel hidden"><h2>How scoring works</h2><div class="rule"><b>Win = 3 points</b><br>Each member of the winning pair receives 3 tournament points.</div><div class="rule"><b>Loss = 1 point</b><br>Each member of the losing pair receives 1 tournament point.</div><div class="rule"><b>Tie-break = capped point difference</b><br>Cap each match's point difference at ±5 for 21-point games or ±3 for 15-point games.</div><div class="rule"><b>Final ranking</b><br>1) Tournament points. 2) Cumulative capped point difference. If still tied, players share the position.</div><div class="rule"><b>Match score</b><br>First to exactly 21 or 15 wins; no two-point margin is required.</div></section>
+<section id="rulesPane" class="panel hidden"><h2>How scoring works</h2><div class="rule"><b>Win = 3 points</b><br>Each member of the winning pair receives 3 tournament points.</div><div class="rule"><b>Loss = 1 point</b><br>Each member of the losing pair receives 1 tournament point.</div><div class="rule"><b>Tie-break = capped point difference</b><br>Cap each match's point difference at ±5 for 21-point games or ±3 for 15-point games.</div><div class="rule"><b>Final ranking</b><br>1) Tournament points. 2) Cumulative capped point difference. If still tied, players share the position.</div><div class="rule"><b>Match score</b><br>Golden: first to exactly 21 or 15 wins. Difference of Two: first to the target with a two-point lead.</div></section>
 </div>
-<div id="tournament" class="hidden"><div class="panel"><div class="rowbetween"><div><div class="eyebrow">Live tournament</div><h2 id="tTitle" style="margin:4px 0">Today's games</h2><div class="status" id="tMeta"></div></div><span class="pill" id="livepill">LIVE</span></div><div class="codebox" style="margin-top:14px"><div><div class="small muted">SHARE THIS CODE</div><div class="code" id="displayCode"></div></div><button class="secondary" id="shareBtn">Share link</button></div><div class="rowbetween" style="margin-top:10px"><div class="status" id="syncStatus">Synced</div><div class="actions" style="margin:0"><button class="secondary" id="organizerBtn">Organizer access</button><button class="secondary" id="adminPurgeBtn">Admin purge</button><button class="secondary" id="newTournamentBtn">Start a New Tournament</button></div></div></div>
+
+  <div id="tournament" class="hidden"><div class="panel"><div class="rowbetween"><div><div class="eyebrow">Live tournament</div><h2 id="tTitle" style="margin:4px 0">Today's games</h2><div class="status" id="tMeta"></div></div><span class="pill" id="livepill">LIVE</span></div><div class="codebox" style="margin-top:14px"><div><div class="small muted">SHARE THIS CODE</div><div class="code" id="displayCode"></div></div><button class="secondary" id="shareBtn">Share link</button></div><div class="rowbetween" style="margin-top:10px"><div class="status" id="syncStatus">Synced</div><div class="actions" style="margin:0"><button class="secondary" id="organizerBtn">Organizer access</button><button class="secondary" id="adminPurgeBtn">Admin purge</button><button class="secondary" id="newTournamentBtn">Start a New Tournament</button></div></div></div>
 <div class="tabs"><button class="tab active" data-view="matches">Matches</button><button class="tab" data-view="leaderboard">Leaderboard</button><button class="tab" data-view="performance">Performance</button><button class="tab" data-view="rules">Scoring rules</button></div>
 <section id="matchesView" class="panel"><div class="rowbetween"><h2>Fixtures &amp; scores</h2><span class="pill" id="progress">0/0 complete</span></div><div id="matchesList"></div><div id="tournamentActions" class="actions"></div></section>
-<section id="leaderboardView" class="panel hidden"><h2>Live leaderboard</h2><div id="winnerBox"></div><div class="rank head"><div>#</div><div>Player</div><div class="num">Pts</div><div class="num">W</div><div class="num">PD</div><div class="num">GP</div></div><div id="leaderboard"></div><div class="actions"><button class="secondary" id="exportBtn">Export results CSV</button></div></section>
+<section id="leaderboardView" class="panel hidden"><h2>Live leaderboard</h2><div id="winnerBox"></div><div class="rank head"><div>#</div><div>Player</div><div class="num">GP</div><div class="num">Pts</div><div class="num">W</div><div class="num">PD</div></div><div id="leaderboard"></div><div class="actions"><button class="secondary" id="exportBtn">Export results CSV</button></div></section>
 <section id="tPerformanceView" class="panel hidden"><div class="rowbetween"><h2>Club performance</h2><button class="secondary" id="refreshPerformance2">Refresh</button></div><div class="field"><label>Player</label><select id="performancePlayer2"><option value="">All players</option></select></div><div id="performanceContent2" style="margin-top:14px"></div></section>
-<section id="rules2View" class="panel hidden"><h2>Scoring rules</h2><div class="rule"><b>Win = 3 points</b><br>Each member of the winning pair receives 3 tournament points.</div><div class="rule"><b>Loss = 1 point</b><br>Each member of the losing pair receives 1 tournament point.</div><div class="rule"><b>Tie-break</b><br>Point difference is capped at ±5 for 21-point games or ±3 for 15-point games, per match.</div><div class="rule"><b>Match score</b><br>First to exactly 21 or 15 wins; no two-point margin is required.</div></section>
+<section id="rules2View" class="panel hidden"><h2>Scoring rules</h2><div class="rule"><b>Win = 3 points</b><br>Each member of the winning pair receives 3 tournament points.</div><div class="rule"><b>Loss = 1 point</b><br>Each member of the losing pair receives 1 tournament point.</div><div class="rule"><b>Tie-break</b><br>Point difference is capped at ±5 for 21-point games or ±3 for 15-point games, per match.</div><div class="rule"><b>Golden</b><br>First to exactly 21 or 15 wins.</div><div class="rule"><b>Difference of Two</b><br>First to the target with a two-point lead. If the score goes beyond the target, the winning margin must be exactly two points.</div></section>
 </div>
 <div id="globalmsg" class="small muted" style="margin-top:12px"></div><div class="footer">RALLY · Shared doubles tournament manager</div></div>
 <div id="pinModal" class="modalback hidden"><div class="modal"><h2>Organizer access</h2><p class="muted small">Enter the club organiser PIN to unlock score entry and score corrections on this device.</p><div class="field"><label>8-digit organiser PIN</label><input id="unlockPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div><div class="actions"><button id="unlockBtn">Unlock</button><button class="secondary" id="cancelUnlock">Cancel</button></div><div id="pinMsg" class="small muted" style="margin-top:8px"></div></div></div>
 <div id="adminModal" class="modalback hidden"><div class="modal" style="max-height:90vh;overflow:auto"><h2>Admin purge</h2><p class="muted small">This uses your separate admin PIN. Do not share it with players.</p><div class="field"><label>8-digit admin PIN</label><input id="adminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div><div class="actions"><button id="adminUnlockBtn">Unlock purge</button><button class="secondary" id="adminCloseBtn">Close</button></div><div id="adminPanel" class="hidden" style="margin-top:16px"><div class="notice small">A. Delete all unfinished tournaments (not yet saved), regardless of scores entered.</div><button id="purgeUnfinishedBtn" class="danger">Delete all unfinished tournaments</button><div class="divider" style="height:1px;background:var(--line);margin:18px 0"></div><h3>B. Select tournaments to delete</h3><p class="muted small">You can select any tournament, including completed and saved tournaments.</p><div id="adminTournamentList"></div><div class="actions"><button id="purgeSelectedBtn" class="danger">Delete selected tournaments</button></div></div><div id="adminMsg" class="small muted" style="margin-top:10px"></div></div></div>
 
-  <script>
+<script>
 const DEFAULT_SUPABASE_URL='https://efnurddtswmeqavszaot.supabase.co';
 const DEFAULT_SUPABASE_ANON_KEY='sb_publishable_OXSxqKgvlrzVNTFib2Lvng_5MPwHbLQ';
 const CLUB_NAMES=['Nilu','Kamu','Mithi','Tanu','Ajinkya','Nikoo','Kunu','PD'];
@@ -53,8 +54,10 @@ function makeFixtures(n,names,historyRows=[]){const gamesPerPlayer=n===4?3:4,tot
 function standingsFor(s){const rows=s.players.map(p=>({...p,points:0,wins:0,losses:0,played:0,pd:0})),by=Object.fromEntries(rows.map(p=>[p.id,p])),cap=s.target===21?5:3;for(const m of s.matches){if(m.score1==null||m.score2==null)continue;const win=m.score1>m.score2?0:1;for(let t=0;t<2;t++)for(const id of m.teams[t]){const p=by[id];p.played++;if(t===win){p.points+=3;p.wins++}else{p.points++;p.losses++}p.pd+=Math.max(-cap,Math.min(cap,t===0?m.score1-m.score2:m.score2-m.score1))}}return rows.sort((a,b)=>b.points-a.points||b.pd-a.pd||a.name.localeCompare(b.name))}
 function standings(){return standingsFor(state)}
 
-    function render(preserveScoreInputs=true){
+  function render(preserveScoreInputs=true){
   if(!state)return;
+  if(!state.scoringMode)state.scoringMode='golden';
+
   const scoreDrafts={};
   const focusedScoreId=document.activeElement?.id || '';
 
@@ -67,7 +70,7 @@ function standings(){return standingsFor(state)}
   const completed=state.matches.filter(m=>m.score1!=null).length;
   $('displayCode').textContent=code;
   $('tTitle').textContent=state.title||"Today's games";
-  $('tMeta').textContent=`${state.players.length} players · First to ${state.target} · ${state.matches.length} matches`;
+  $('tMeta').textContent=`${state.players.length} players · First to ${state.target} · ${state.scoringMode==='difference'?'Difference of Two':'Golden'} · ${state.matches.length} matches`;
   $('progress').textContent=`${completed}/${state.matches.length} complete`;
   $('livepill').textContent=state._rally_saved_at?'SAVED':(completed===state.matches.length?'READY TO SAVE':'LIVE');
   $('organizerBtn').textContent=organizerUnlocked?'Organizer unlocked':'Organizer access';
@@ -76,13 +79,14 @@ function standings(){return standingsFor(state)}
     const a=m.teams[0].map(id=>state.players.find(p=>p.id===id).name).join(' + ');
     const b=m.teams[1].map(id=>state.players.find(p=>p.id===id).name).join(' + ');
     const done=m.score1!=null;
+    const maxAttr=state.scoringMode==='difference'?'':`max="${state.target}"`;
     return `<div style="padding:12px 0;border-bottom:1px solid var(--line)">
       <div class="matchnum">Game ${i+1} ${done?'<span class="pill">SCORED</span>':'<span class="pill">AWAITING SCORE</span>'}</div>
       <div class="match"><div class="team">${esc(a)}</div><div class="vs">VS</div><div class="team right">${esc(b)}</div></div>
       ${organizerUnlocked&&!state._rally_saved_at?`<div class="scoreline">
-        <input type="number" min="0" max="${state.target}" id="s1-${m.id}" placeholder="${done?m.score1:'0'}" value="${done?m.score1:''}">
+        <input type="number" min="0" ${maxAttr} step="1" id="s1-${m.id}" placeholder="${done?m.score1:'0'}" value="${done?m.score1:''}">
         <span class="muted">–</span>
-        <input type="number" min="0" max="${state.target}" id="s2-${m.id}" placeholder="${done?m.score2:'0'}" value="${done?m.score2:''}">
+        <input type="number" min="0" ${maxAttr} step="1" id="s2-${m.id}" placeholder="${done?m.score2:'0'}" value="${done?m.score2:''}">
         <button data-save="${m.id}">${done?'Update':'Save score'}</button>
       </div>`:`<div class="small muted" style="margin-top:8px">${done?`Final score: ${m.score1} – ${m.score2}`:'Score entry is locked. Organiser access required.'}</div>`}
     </div>`;
@@ -103,7 +107,7 @@ function standings(){return standingsFor(state)}
 
   const rows=standings(),complete=completed===state.matches.length,top=rows[0],tied=rows.filter(r=>r.points===top.points&&r.pd===top.pd);
   $('winnerBox').innerHTML=complete?`<div class="champ"><div class="eyebrow">${tied.length>1?'Joint leaders':'Tournament winner'}</div><div class="winner">${tied.map(p=>esc(p.name)).join(' & ')}</div><div class="small muted">${top.points} tournament points · ${top.pd>0?'+':''}${top.pd} capped point difference</div></div>`:`<div class="notice small">${completed} of ${state.matches.length} games completed. Standings update as scores are entered.</div>`;
-  $('leaderboard').innerHTML=rows.map((p,i)=>`<div class="rank"><div class="pos">${i+1}</div><div class="name">${esc(p.name)}</div><div class="num">${p.points}</div><div class="num">${p.wins}</div><div class="num">${p.pd>0?'+':''}${p.pd}</div><div class="num">${p.played}</div></div>`).join('');
+  $('leaderboard').innerHTML=rows.map((p,i)=>`<div class="rank"><div class="pos">${i+1}</div><div class="name">${esc(p.name)}</div><div class="num">${p.played}</div><div class="num">${p.points}</div><div class="num">${p.wins}</div><div class="num">${p.pd>0?'+':''}${p.pd}</div></div>`).join('');
 
   const actions=$('tournamentActions');
   if(state._rally_saved_at){
@@ -114,6 +118,7 @@ function standings(){return standingsFor(state)}
     const sbt=$('saveTournamentBtn');if(sbt)sbt.onclick=saveCurrentTournament;
   }
 }
+
 async function refresh(silent=false){
   if(!sb||!code)return;
   try{
@@ -124,12 +129,31 @@ async function refresh(silent=false){
     $('syncStatus').textContent='Live sync · refreshed just now';
   }catch(e){if(!silent)msg(e.message,true)}
 }
-async function verifyPin(pin){const {data,error}=await sb.rpc('rally_verify_pin',{p_pin:pin});if(error)throw error;if(data!==true)throw Error('Incorrect organiser PIN.');return true}
+
+async function verifyPin(pin){
+  const {data,error}=await sb.rpc('rally_verify_pin',{p_pin:pin});
+  if(error)throw error;
+  if(data!==true)throw Error('Incorrect organiser PIN.');
+  return true;
+}
+
+function validFinalScore(s1,s2,target,mode){
+  if(!Number.isInteger(s1)||!Number.isInteger(s2)||s1<0||s2<0||s1===s2)return false;
+  const high=Math.max(s1,s2),low=Math.min(s1,s2),margin=high-low;
+  if(mode!=='difference')return high===target;
+  if(high<target)return false;
+  if(high===target)return margin>=2;
+  return margin===2;
+}
+
 async function saveScore(id){
   if(!organizerUnlocked)throw Error('Unlock organiser access first.');
   const s1=Number($('s1-'+id).value),s2=Number($('s2-'+id).value);
-  if(!Number.isInteger(s1)||!Number.isInteger(s2)||s1<0||s2<0||s1>state.target||s2>state.target||s1===s2||Math.max(s1,s2)!==state.target){
-    msg(`Enter a valid final score: one side must reach ${state.target}, with no tie.`,true);return;
+  if(!validFinalScore(s1,s2,state.target,state.scoringMode||'golden')){
+    msg(state.scoringMode==='difference'
+      ?`Invalid score. In Difference of Two, the winner must reach at least ${state.target}; at ${state.target} the lead must be at least 2, and above ${state.target} the lead must be exactly 2.`
+      :`Enter a valid Golden score: one side must reach exactly ${state.target}.`,true);
+    return;
   }
   try{
     msg('Saving score…');
@@ -138,6 +162,7 @@ async function saveScore(id){
     state=data;render();msg('Score saved and shared with everyone.');
   }catch(e){msg(e.message,true)}
 }
+
 function enterTournament(c){
   code=c.toUpperCase();
   history.replaceState({},'',location.pathname+'?code='+code);
@@ -147,16 +172,31 @@ function enterTournament(c){
   if(poller)clearInterval(poller);
   poller=setInterval(()=>refresh(true),3000);
 }
-async function loadHistory(){const {data,error}=await sb.rpc('rally_history');if(error)throw error;historyCache=Array.isArray(data)?data:[];return historyCache}
+
+async function loadHistory(){
+  const {data,error}=await sb.rpc('rally_history');
+  if(error)throw error;
+  historyCache=Array.isArray(data)?data:[];
+  return historyCache;
+}
 async function loadSavedHistory(){return (await loadHistory()).filter(t=>t.saved_at)}
+
 function aggregatePerformance(tournaments){
   const people={};
-  function person(name){const k=name.trim().toLowerCase();if(!people[k])people[k]={name,games:0,wins:0,losses:0,scored:0,conceded:0,tournaments:new Set(),tournamentWins:0,partners:{}};return people[k]}
+  function person(name){
+    const k=name.trim().toLowerCase();
+    if(!people[k])people[k]={name,games:0,wins:0,losses:0,scored:0,conceded:0,tournaments:new Set(),tournamentWins:0,partners:{}};
+    return people[k];
+  }
   tournaments.forEach(t=>{
-    const s=t.state;if(!s||!Array.isArray(s.players)||!Array.isArray(s.matches))return;
+    const s=t.state;
+    if(!s||!Array.isArray(s.players)||!Array.isArray(s.matches))return;
     const byId=Object.fromEntries(s.players.map(p=>[p.id,p.name]));
     const final=s.matches.every(m=>m.score1!=null&&m.score2!=null);
-    if(final){const standings=standingsFor(s);const top=standings[0];standings.filter(p=>p.points===top.points&&p.pd===top.pd).forEach(p=>person(p.name).tournamentWins++)}
+    if(final){
+      const standings=standingsFor(s),top=standings[0];
+      standings.filter(p=>p.points===top.points&&p.pd===top.pd).forEach(p=>person(p.name).tournamentWins++);
+    }
     s.matches.forEach(m=>{
       if(m.score1==null||m.score2==null)return;
       const win=m.score1>m.score2?0:1;
@@ -165,7 +205,8 @@ function aggregatePerformance(tournaments){
         ids.forEach(id=>{
           const name=byId[id];if(!name)return;
           const p=person(name);p.games++;p.tournaments.add(t.code);
-          p.scored+=team===0?m.score1:m.score2;p.conceded+=team===0?m.score2:m.score1;
+          p.scored+=team===0?m.score1:m.score2;
+          p.conceded+=team===0?m.score2:m.score1;
           if(team===win)p.wins++;else p.losses++;
         });
         if(names.length===2){
@@ -173,7 +214,8 @@ function aggregatePerformance(tournaments){
           for(const [self,partner] of [[a,b],[b,a]]){
             const p=person(self),k=partner.toLowerCase();
             if(!p.partners[k])p.partners[k]={name:partner,games:0,wins:0};
-            p.partners[k].games++;if(team===win)p.partners[k].wins++;
+            p.partners[k].games++;
+            if(team===win)p.partners[k].wins++;
           }
         }
       }
@@ -182,7 +224,7 @@ function aggregatePerformance(tournaments){
   return Object.values(people).map(p=>({...p,tournaments:p.tournaments.size,winRate:p.games?100*p.wins/p.games:0,partnerRows:Object.values(p.partners).sort((a,b)=>b.games-a.games||b.wins-a.wins)})).sort((a,b)=>b.wins-a.wins||b.winRate-a.winRate||a.name.localeCompare(b.name));
 }
 
-    function performanceHTML(data,filter){
+  function performanceHTML(data,filter){
   const chosen=filter?data.filter(p=>p.name.toLowerCase()===filter.toLowerCase()):data;
   if(!data.length)return '<div class="notice">No saved tournament history found yet. Completed matches will appear here automatically.</div>';
   if(!chosen.length)return '<div class="notice">No results for this player yet.</div>';
@@ -194,8 +236,8 @@ function aggregatePerformance(tournaments){
       <div class="stat"><strong>${data.length}</strong><span>Players tracked</span></div>
     </div>
     <h3>All-time player leaderboard</h3>
-    <div class="rank head"><div>#</div><div>Player</div><div class="num">W</div><div class="num">L</div><div class="num">Win%</div><div class="num">Games</div></div>
-    ${data.map((p,i)=>`<div class="rank"><div class="pos">${i+1}</div><div class="name">${esc(p.name)}</div><div class="num">${p.wins}</div><div class="num">${p.losses}</div><div class="num">${p.winRate.toFixed(1)}%</div><div class="num">${p.games}</div></div>`).join('')}
+    <div class="rank head"><div>#</div><div>Player</div><div class="num">Games</div><div class="num">W</div><div class="num">L</div><div class="num">Win%</div></div>
+    ${data.map((p,i)=>`<div class="rank"><div class="pos">${i+1}</div><div class="name">${esc(p.name)}</div><div class="num">${p.games}</div><div class="num">${p.wins}</div><div class="num">${p.losses}</div><div class="num">${p.winRate.toFixed(1)}%</div></div>`).join('')}
     <h3>Recent tournaments</h3>
     ${historyCache.filter(t=>t.saved_at).slice(0,12).map(t=>`<div class="historyrow"><div>${esc(t.state?.title||'Badminton')}</div><div>${new Date(t.created_at).toLocaleDateString()}</div><div>${t.state?.players?.length||0} players</div><div>${t.state?.matches?.filter(m=>m.score1!=null).length||0}/${t.state?.matches?.length||0} scored</div></div>`).join('')}`;
   }
@@ -217,45 +259,71 @@ function aggregatePerformance(tournaments){
   <h3>Scoring summary</h3>
   <p class="muted small">Average points scored per game: <b>${p.games?(p.scored/p.games).toFixed(1):'0'}</b> · Average conceded: <b>${p.games?(p.conceded/p.games).toFixed(1):'0'}</b></p>`;
 }
+
 async function loadPerformance(inTournament=false){
   try{
     const data=await loadSavedHistory(),stats=aggregatePerformance(data);
-    const select=$(inTournament?'performancePlayer2':'performancePlayer'),content=$(inTournament?'performanceContent2':'performanceContent');
+    const select=$(inTournament?'performancePlayer2':'performancePlayer');
+    const content=$(inTournament?'performanceContent2':'performanceContent');
     const prior=select.value;
     select.innerHTML='<option value="">All players</option>'+stats.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
     select.value=stats.some(p=>p.name===prior)?prior:'';
     content.innerHTML=performanceHTML(stats,select.value);
-  }catch(e){$(inTournament?'performanceContent2':'performanceContent').innerHTML=`<div class="notice error">Could not load performance history: ${esc(e.message)}</div>`}
+  }catch(e){
+    $(inTournament?'performanceContent2':'performanceContent').innerHTML=`<div class="notice error">Could not load performance history: ${esc(e.message)}</div>`;
+  }
 }
+
 async function saveCurrentTournament(){
   if(!confirm('Are you sure? Saving locks this tournament permanently for players.'))return;
-  try{const {data,error}=await sb.rpc('rally_save',{p_code:code});if(error)throw error;state=data;render();msg('Tournament saved. It is now locked and included in club performance.')}
-  catch(e){msg(e.message,true)}
+  try{
+    const {data,error}=await sb.rpc('rally_save',{p_code:code});
+    if(error)throw error;
+    state=data;render();msg('Tournament saved. It is now locked and included in club performance.');
+  }catch(e){msg(e.message,true)}
 }
+
 async function deleteCurrentTournament(){
   if(!confirm('Are you sure you want to delete this tournament? This cannot be undone.'))return;
   try{
-    const {error}=await sb.rpc('rally_delete',{p_code:code});if(error)throw error;
-    if(poller)clearInterval(poller);poller=null;state=null;code=null;organizerUnlocked=false;
-    sessionStorage.removeItem('rally_pin');history.replaceState({},'',location.pathname);
-    show('tournament',false);show('home',true);setHome('create');msg('Tournament deleted.');
+    const {error}=await sb.rpc('rally_delete',{p_code:code});
+    if(error)throw error;
+    if(poller)clearInterval(poller);
+    poller=null;state=null;code=null;organizerUnlocked=false;
+    sessionStorage.removeItem('rally_pin');
+    history.replaceState({},'',location.pathname);
+    show('tournament',false);show('home',true);setHome('create');
+    msg('Tournament deleted.');
   }catch(e){msg(e.message,true)}
 }
-function adminOpen(){$('adminPin').value='';$('adminPanel').classList.add('hidden');$('adminMsg').textContent='';show('adminModal',true);$('adminPin').focus()}
+
+function adminOpen(){
+  $('adminPin').value='';
+  $('adminPanel').classList.add('hidden');
+  $('adminMsg').textContent='';
+  show('adminModal',true);
+  $('adminPin').focus();
+}
+
 async function adminUnlock(){
   const pin=$('adminPin').value.trim();
   if(!/^\d{8}$/.test(pin))throw Error('Enter the 8-digit admin PIN.');
   const {data:ok,error:pinError}=await sb.rpc('rally_admin_verify_pin',{p_admin_pin:pin});
-  if(pinError)throw pinError;if(ok!==true)throw Error('Incorrect admin PIN.');
+  if(pinError)throw pinError;
+  if(ok!==true)throw Error('Incorrect admin PIN.');
   const rows=await loadHistory();
   $('adminTournamentList').innerHTML=rows.length?rows.map(t=>{
-    const s=t.state||{},done=(s.matches||[]).filter(m=>m.score1!=null&&m.score2!=null).length,total=(s.matches||[]).length;
+    const s=t.state||{};
+    const done=(s.matches||[]).filter(m=>m.score1!=null&&m.score2!=null).length;
+    const total=(s.matches||[]).length;
     return `<label style="display:flex;gap:10px;align-items:flex-start;padding:10px 4px;border-bottom:1px solid var(--line);font-size:13px"><input type="checkbox" class="purgeCode" value="${esc(t.code)}" style="margin-top:4px"><span><b>${esc(s.title||'Badminton')}</b><br><span class="muted">${esc(t.code)} · ${new Date(t.created_at).toLocaleString()} · ${(s.players||[]).map(p=>esc(p.name)).join(', ')} · ${done}/${total} scored · ${t.saved_at?'SAVED':'UNFINISHED'}</span></span></label>`;
   }).join(''):'<div class="notice">No tournaments in the database.</div>';
   $('adminPanel').classList.remove('hidden');
   $('adminMsg').textContent='Admin access verified for this screen. The PIN is required again for every purge.';
 }
+
 $('adminUnlockBtn').onclick=async()=>{try{await adminUnlock()}catch(e){$('adminMsg').textContent=e.message}};
+
 $('purgeUnfinishedBtn').onclick=async()=>{
   const pin=$('adminPin').value.trim();
   if(!confirm('Delete ALL unfinished tournaments? This includes tournaments with scores entered but not saved.'))return;
@@ -263,11 +331,14 @@ $('purgeUnfinishedBtn').onclick=async()=>{
     const {data,error}=await sb.rpc('rally_admin_purge',{p_admin_pin:pin,p_mode:'unfinished',p_codes:null});
     if(error)throw error;
     $('adminMsg').textContent=`Deleted ${data} unfinished tournament(s).`;
-    await adminUnlock();if(code)await refresh(true);
+    await adminUnlock();
+    if(code)await refresh(true);
   }catch(e){$('adminMsg').textContent=e.message}
 };
+
 $('purgeSelectedBtn').onclick=async()=>{
-  const pin=$('adminPin').value.trim(),codes=[...document.querySelectorAll('.purgeCode:checked')].map(x=>x.value);
+  const pin=$('adminPin').value.trim();
+  const codes=[...document.querySelectorAll('.purgeCode:checked')].map(x=>x.value);
   if(!codes.length){$('adminMsg').textContent='Select at least one tournament.';return}
   if(!confirm(`Permanently delete ${codes.length} selected tournament(s), including any saved results?`))return;
   try{
@@ -276,20 +347,27 @@ $('purgeSelectedBtn').onclick=async()=>{
     $('adminMsg').textContent=`Deleted ${data} selected tournament(s).`;
     await adminUnlock();
     if(code&&codes.includes(code)){
-      if(poller)clearInterval(poller);poller=null;state=null;code=null;
+      if(poller)clearInterval(poller);
+      poller=null;state=null;code=null;
       show('tournament',false);show('home',true);setHome('create');
     }else if(code)await refresh(true);
   }catch(e){$('adminMsg').textContent=e.message}
 };
+
 $('adminPurgeBtn').onclick=adminOpen;
 $('adminCloseBtn').onclick=()=>show('adminModal',false);
+
 function goHomeNew(){
   if(!confirm('Are you sure you want to leave this tournament and start a new one? An unsaved tournament will remain available until deleted or purged.'))return;
-  if(poller)clearInterval(poller);poller=null;state=null;code=null;organizerUnlocked=false;
-  sessionStorage.removeItem('rally_pin');history.replaceState({},'',location.pathname);
-  show('tournament',false);show('home',true);setHome('create');$('createPin').value='';
+  if(poller)clearInterval(poller);
+  poller=null;state=null;code=null;organizerUnlocked=false;
+  sessionStorage.removeItem('rally_pin');
+  history.replaceState({},'',location.pathname);
+  show('tournament',false);show('home',true);setHome('create');
+  $('createPin').value='';
   msg('Ready to set up a new tournament.');
 }
+
 async function connect(){
   try{
     sb=window.supabase.createClient(DEFAULT_SUPABASE_URL,DEFAULT_SUPABASE_ANON_KEY);
@@ -300,66 +378,96 @@ async function connect(){
     else{
       show('home',true);
       const saved=localStorage.getItem('rally_home_tab')||'create';
-      setHome(saved);setupNames();msg('Connected. Start a tournament or join with a code.');
+      setHome(saved);setupNames();
+      msg('Connected. Start a tournament or join with a code.');
     }
   }catch(e){msg('Connection error: '+e.message,true)}
 }
+
 $('playerCount').onchange=setupNames;
 setupNames();
 document.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>{localStorage.setItem('rally_home_tab',b.dataset.home);setHome(b.dataset.home)});
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+
 $('createTournament').onclick=async()=>{
   try{
     const pin=$('createPin').value.trim();
     if(!/^\d{8}$/.test(pin))throw Error('Enter your 8-digit organiser PIN.');
     await verifyPin(pin);
-    const selects=[...document.querySelectorAll('.pname:not(:disabled)')],selected=selects.map(x=>x.value);
+    const selects=[...document.querySelectorAll('.pname:not(:disabled)')];
+    const selected=selects.map(x=>x.value);
     if(selected.some(x=>!x))throw Error('Please choose a name for every player.');
     if(new Set(selected).size!==selected.length)throw Error('Each player can only be selected once.');
     const names=shuffle(selected),n=names.length,target=+$('target').value;
-    const priorHistory=await loadSavedHistory(),matches=makeFixtures(n,names,priorHistory);
-    const next={title:'Badminton · '+new Date().toLocaleDateString(),target,players:names.map((name,i)=>({id:'P'+i,name})),matches};
+    const scoringMode=$('scoringMode').value;
+    const priorHistory=await loadSavedHistory();
+    const matches=makeFixtures(n,names,priorHistory);
+    const next={title:'Badminton · '+new Date().toLocaleDateString(),target,scoringMode,players:names.map((name,i)=>({id:'P'+i,name})),matches};
     const {data,error}=await sb.rpc('rally_create',{p_state:next,p_pin:pin});
     if(error)throw error;
-    sessionStorage.setItem('rally_pin',pin);$('createPin').value='';organizerUnlocked=true;state=next;
-    enterTournament(data);msg('Tournament created. Organiser mode is unlocked on this device.');
+    sessionStorage.setItem('rally_pin',pin);
+    $('createPin').value='';
+    organizerUnlocked=true;state=next;
+    enterTournament(data);
+    msg('Tournament created. Organiser mode is unlocked on this device.');
   }catch(e){msg(e.message,true)}
 };
+
 $('joinTournament').onclick=()=>{
   const c=$('joinCode').value.trim().toUpperCase();
-  if(!/^[A-F0-9]{6}$/.test(c)){msg('Enter the 6-character code (letters A–F and digits 0–9). Check that 0 is not the letter O.',true);return}
+  if(!/^[A-F0-9]{6}$/.test(c)){
+    msg('Enter the 6-character code (letters A–F and digits 0–9). Check that 0 is not the letter O.',true);
+    return;
+  }
   enterTournament(c);
 };
+
 $('shareBtn').onclick=async()=>{
   const url=location.href;
-  if(navigator.share){try{await navigator.share({title:'Join our badminton tournament',text:'Join our live badminton tournament:',url})}catch(e){}}
-  else{try{await navigator.clipboard.writeText(url);msg('Share link copied.')}catch(e){msg('Copy this page URL to share.',true)}}
+  if(navigator.share){
+    try{await navigator.share({title:'Join our badminton tournament',text:'Join our live badminton tournament:',url})}catch(e){}
+  }else{
+    try{await navigator.clipboard.writeText(url);msg('Share link copied.')}
+    catch(e){msg('Copy this page URL to share.',true)}
+  }
 };
+
 $('newTournamentBtn').onclick=goHomeNew;
 $('organizerBtn').onclick=()=>{
   if(organizerUnlocked){
-    if(confirm('Lock organiser controls on this device?')){organizerUnlocked=false;sessionStorage.removeItem('rally_pin');render()}
+    if(confirm('Lock organiser controls on this device?')){
+      organizerUnlocked=false;sessionStorage.removeItem('rally_pin');render();
+    }
     return;
   }
-  $('unlockPin').value='';$('pinMsg').textContent='';show('pinModal',true);$('unlockPin').focus();
+  $('unlockPin').value='';$('pinMsg').textContent='';
+  show('pinModal',true);$('unlockPin').focus();
 };
 $('cancelUnlock').onclick=()=>show('pinModal',false);
 $('unlockBtn').onclick=async()=>{
   try{
-    const pin=$('unlockPin').value.trim();await verifyPin(pin);
-    sessionStorage.setItem('rally_pin',pin);organizerUnlocked=true;show('pinModal',false);render();
+    const pin=$('unlockPin').value.trim();
+    await verifyPin(pin);
+    sessionStorage.setItem('rally_pin',pin);
+    organizerUnlocked=true;show('pinModal',false);render();
     msg('Organizer access unlocked on this device.');
   }catch(e){$('pinMsg').textContent=e.message}
 };
+
 $('refreshPerformance').onclick=()=>loadPerformance();
 $('refreshPerformance2').onclick=()=>loadPerformance(true);
 $('performancePlayer').onchange=()=>loadPerformance();
 $('performancePlayer2').onchange=()=>loadPerformance(true);
+
 $('exportBtn').onclick=()=>{
   const rows=standings();
   let csv='Rank,Player,Tournament points,Wins,Losses,Games played,Capped point difference\n'+rows.map((p,i)=>[i+1,'"'+p.name.replaceAll('"','""')+'"',p.points,p.wins,p.losses,p.played,p.pd].join(',')).join('\n')+'\n\nGame,Team 1,Score 1,Team 2,Score 2\n'+state.matches.map((m,i)=>[i+1,m.teams[0].map(id=>state.players.find(p=>p.id===id).name).join(' + '),m.score1??'',m.teams[1].map(id=>state.players.find(p=>p.id===id).name).join(' + '),m.score2??''].map(x=>'"'+String(x??'').replaceAll('"','""')+'"').join(',')).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='rally-tournament-results.csv';a.click();URL.revokeObjectURL(a.href);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='rally-tournament-results.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
 };
+
 connect();
 </script></body></html>
-
